@@ -1,0 +1,167 @@
+CREATE TABLE t_messure
+(id_messure int not null enable,
+ name VARCHAR2(4) NOT NULL ENABLE,
+  CONSTRAINT pk_messure PRIMARY KEY (id_messure)
+ENABLE
+);
+
+CREATE TABLE t_material
+(id_material int not null enable,
+ name VARCHAR2(100) NOT NULL ENABLE,
+  id_messure INT NOT NULL ENABLE,
+  CONSTRAINT pk_material PRIMARY KEY (ID_MATERIAL) ENABLE,
+  CONSTRAINT fk_material_messure 
+   FOREIGN KEY (ID_MESSURE) REFERENCES
+  T_MESSURE(ID_MESSURE) ENABLE
+);
+
+CREATE TABLE t_inprice
+(id_material int not null enable,
+ price_date DATE NOT NULL ENABLE,
+ price NUMBER(10,2) CHECK (PRICE>=0) ENABLE,
+  CONSTRAINT fk_inprice_material
+     FOREIGN KEY (ID_MATERIAL) REFERENCES
+     T_MATERIAL (ID_MATERIAL)
+     ON DELETE CASCADE
+);
+
+CREATE TABLE t_store
+(id_store int not null enable,
+ name VARCHAR2(20) NOT NULL ENABLE,
+  CONSTRAINT pk_store PRIMARY KEY (id_store)
+ENABLE
+);
+
+CREATE TABLE t_caterer
+(id_caterer int not null enable,
+ name VARCHAR2(20) NOT NULL ENABLE,
+ address VARCHAR2(100) NOT NULL ENABLE,
+ phone int not null enable,
+ fax VARCHAR2(100) NOT NULL ENABLE,
+  CONSTRAINT pk_caterer PRIMARY KEY (id_caterer)
+ENABLE
+);
+
+REATE TABLE t_surplus
+(id_material int not null enable,
+  CONSTRAINT fk_surplus_material
+     FOREIGN KEY (ID_MATERIAL) REFERENCES
+     T_MATERIAL (ID_MATERIAL)
+     ON DELETE CASCADE,
+id_store int not null enable,
+ CONSTRAINT fk_surplus_store
+     FOREIGN KEY (id_store) REFERENCES
+     T_STORE (id_store)
+     ON DELETE CASCADE,
+volume INT NOT NULL ENABLE
+);
+
+CREATE TABLE t_supply
+(id_supply int not null enable,
+ id_material int not null enable,
+  CONSTRAINT fk_supply_material
+     FOREIGN KEY (ID_MATERIAL) REFERENCES
+     T_MATERIAL (ID_MATERIAL)
+     ON DELETE CASCADE,
+id_store int not null enable,
+ CONSTRAINT fk_supply_store
+     FOREIGN KEY (id_store) REFERENCES
+     T_STORE (id_store)
+     ON DELETE CASCADE,
+volume INT NOT NULL ENABLE,
+supply_date DATE NOT NULL ENABLE,
+id_caterer int not null enable,
+   CONSTRAINT fk_supply_caterer
+     FOREIGN KEY (id_caterer) REFERENCES
+     T_CATERER (ID_CATERER)
+     ON DELETE CASCADE
+);
+
+CREATE TABLE t_employer
+(id_employer int not null enable,
+ name VARCHAR2(20) NOT NULL ENABLE,
+ surname VARCHAR2(20) NOT NULL ENABLE,
+  CONSTRAINT pk_employer PRIMARY KEY (id_employer)
+ENABLE
+);
+
+CREATE TABLE t_section
+(id_section int not null enable,
+ name VARCHAR2(20) NOT NULL ENABLE,
+  id_employer int not null enable,
+CONstraint pk_section primary key (ID_section),
+  CONSTRAINT fk_section_employer
+     FOREIGN KEY (id_employer) REFERENCES
+     T_EMPLOYER (ID_EMPLOYER)
+     ON DELETE CASCADE
+);
+
+ CONSTRAINT fk_deliver_store
+     FOREIGN KEY (id_store) REFERENCES
+     T_STORE (id_store)
+     ON DELETE CASCADE,
+volume INT NOT NULL ENABLE,
+supply_date DATE NOT NULL ENABLE,
+id_section int not null enable,
+   CONSTRAINT fk_deliver_section
+     FOREIGN KEY (id_section) REFERENCES
+     T_section (ID_section)
+     ON DELETE CASCADE
+);
+
+ALTER TABLE T_CATERER
+  DROP COLUMN address
+ALTER TABLE T_CATERER
+  add legaladdress VARCHAR(20)
+ALTER TABLE T_CATERER
+  add ACTUALADDRESS VARCHAR(20)
+ALTER TABLE T_CATERER
+  add EMAIL VARCHAR(20)
+
+ALTER TABLE T_EMPLOYER
+  add sex char(1) default 'M' check(sex in ('M', 'W'))
+  add birthdate date
+  add marriage varchar2(10)
+
+ALTER TABLE T_SURPLUS
+  add store_date date
+  add constraint pk_surplus
+        primary key (id_store, id_material)
+
+CREATE TABLE t_job
+(id_job INT NOT NULL,
+  name VARCHAR(30),
+  CONSTRAINT pk_job PRIMARY KEY (ID_JOB)
+)
+
+ALTER TABLE T_EMPLOYER
+add id_job int
+  add constraint fk_employer
+    foreign key (id_job) references t_job(id_job)
+      on delete set null
+ALTER TABLE T_messure
+ modify (name varchar2(5))
+
+ALTER TABLE T_inprice
+ add constraint pk_inprice
+        primary key (price_date, id_material)
+
+CREATE TABLE t_group
+(id_group int not null enable,
+ name VARCHAR2(100) NOT NULL ENABLE,
+  CONSTRAINT pk_group PRIMARY KEY (id_group)
+ENABLE
+);
+
+ALTER TABLE T_MATERIAL
+add id_group int not null enable
+
+ALTER TABLE T_MATERIAL
+add constraint fk_material_group
+    foreign key (id_group) references t_group(id_group)
+      on delete set null
+
+
+
+
+
